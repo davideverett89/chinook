@@ -48,10 +48,46 @@ JOIN Employee e ON c.SupportRepId = e.EmployeeId;
 
 -- 8. How many Invoices were there in 2009 and 2011?
 
-SELECT Count()
+SELECT Count(InvoiceDate) AS "Total Number of Invoices from 2009"
 FROM Invoice
 WHERE InvoiceDate LIKE '%2009%';
 
-SELECT Count()
+SELECT Count(InvoiceDate) AS "Total Number of Invoices from 2011"
 FROM Invoice
 WHERE InvoiceDate LIKE '%2011%';
+
+-- 9. What are the respective total sales for each of those years?
+
+SELECT Sum(Total) as "2009 Total Invoiced Amount"
+FROM Invoice
+WHERE InvoiceDate LIKE '%2009%';
+
+SELECT Sum(Total) as "2011 Total Invoiced Amount"
+FROM Invoice
+WHERE InvoiceDate LIKE '%2011%';
+
+-- 10. Looking at the InvoiceLine table, provide a query that COUNTs the number of line items for Invoice ID 37.
+
+SELECT Count() as "Total Number of Line Items"
+FROM InvoiceLine i
+WHERE i.InvoiceId = 37;
+
+-- 11. Looking at the InvoiceLine table, provide a query that COUNTs the number of line items for each Invoice.
+
+SELECT Count() as "Total Number of Line Items", InvoiceId
+FROM InvoiceLine i
+GROUP BY InvoiceId;
+
+-- 12. Provide a query that includes the purchased track name with each invoice line item.
+
+SELECT t.Name, i.InvoiceId
+FROM InvoiceLine i
+JOIN Track t ON i.TrackId = t.TrackId;
+
+-- 13. Provide a query that includes the purchased track name AND artist name with each invoice line item.
+
+SELECT t.Name AS "Track Name", a.Name AS "Artist Name", i.InvoiceId
+FROM InvoiceLine i
+JOIN Track t ON i.TrackId = t.TrackId
+JOIN Album al ON t.AlbumId = al.AlbumId
+JOIN Artist a ON al.ArtistId = a.ArtistId;
